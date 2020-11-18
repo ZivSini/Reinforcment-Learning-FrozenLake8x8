@@ -62,7 +62,6 @@ def learn_sarsa(alpha, _lambda):
     # graph = []
     policy_value = []
     for episode in range(num_of_episodes):
-        print(episode)
         if episode in takeSample:
             policy_value.append(simulate(Q, epsilon,env))
         # episode_reward = 1.0
