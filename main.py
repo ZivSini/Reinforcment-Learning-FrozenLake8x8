@@ -1,6 +1,7 @@
 import gym
 import numpy as np
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 from numpy.random import random, choice
 
 
@@ -48,7 +49,7 @@ def simulate(Q, epsilon,env):
 
 
 def learn_sarsa(alpha, _lambda):
-    takeSample = [250, 500, 750, 1000, 1500, 2000, 000, 5000, 7000, 10000, 13000, 16000, 20000]
+    takeSample = [250, 500, 750, 1000, 1500, 2000, 3000, 5000, 7000, 10000, 13000, 16000, 20000, 24000, 29000, 34000, 40000, 46000, 53000, 60000, 68000, 76000, 87000, 100000]# reach 100000
     # env = gym.make("FrozenLake-v0")
     env = gym.make("FrozenLake8x8-v0")
     number_of_actions = env.action_space.n
@@ -58,11 +59,14 @@ def learn_sarsa(alpha, _lambda):
     gamma = 0.95
     # _lambda = 0.3
     # alpha = 0.1
-    num_of_episodes = 20001
+    num_of_episodes = 30000
     # graph = []
     policy_value = []
+    counter = 0
     for episode in range(num_of_episodes):
-        if episode in takeSample:
+        if counter in takeSample: #change to counter
+            if counter == 100000:
+                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             policy_value.append(simulate(Q, epsilon,env))
         # episode_reward = 1.0
         E = np.zeros((number_of_states, number_of_actions))
@@ -70,7 +74,8 @@ def learn_sarsa(alpha, _lambda):
         current_action = epsilon_greedy(Q, epsilon, current_state)
         done = False
         step_number = 0
-        while not done and step_number < 250:
+        while not done and step_number < 300:
+            counter += 1
             next_state, reward, done, info = env.step(current_action)
             # episode_reward+=reward
             step_number += 1
@@ -88,10 +93,6 @@ def learn_sarsa(alpha, _lambda):
         epsilon = epsilon * 0.999
         # graph.append(episode_reward)
 
-
-
-
-
     env.reset()
     env.render()
     done = False
@@ -106,9 +107,28 @@ def learn_sarsa(alpha, _lambda):
         env.render()
     env.reset()
 
+    # fig = go.Figure(
+    #     data=[go.Bar(x=takeSample, y=policy_value)],
+    #     layout=go.Layout(
+    #         title=go.layout.Title(text="A Figure Specified By A Graph Object")
+    #     )
+    # )
+    # fig.update_layout(
+    #     title=f"Policy Average Reward Per Steps\n alpha= {alpha}  lambda= {_lambda }",
+    #     xaxis_title="Number Of Steps",
+    #     yaxis_title="Average Reward",
+    #     font=dict(
+    #         family="Courier New, monospace",
+    #         size=18,
+    #         color="#7f7f7f"
+    #     )
+    # )
+    # fig.show()
+
+
 
     plt.plot(policy_value, linewidth=2)
-    plt.xlabel(f"Episode   alpha= {alpha}  lambda= {_lambda} ")
+    plt.xlabel(f"time step\n   alpha= {alpha}  lambda= {_lambda} ")
     plt.ylabel("episode value".format(100))
     # plt.axis([0, 20000, 0, 1])
     plt.show()
@@ -116,8 +136,18 @@ def learn_sarsa(alpha, _lambda):
 
 
 if __name__ == '__main__':
-  learn_sarsa(0.05,0.3)
-  learn_sarsa(0.1,0.3)
-  learn_sarsa(0.1,0.2)
-  learn_sarsa(0.05,0.2)
+  # learn_sarsa(0.05, 0.3)
+  # learn_sarsa(0.05, 0.2)
+  # learn_sarsa(0.05, 0.1)
+  # learn_sarsa(0.1, 0.3)
+  # learn_sarsa(0.1, 0.2)
+  # learn_sarsa(0.1, 0.1)
+  learn_sarsa(0.15, 0.3)
+  learn_sarsa(0.15, 0.2)
+  learn_sarsa(0.15, 0.1)
+  learn_sarsa(0.2, 0.3)
+  learn_sarsa(0.2, 0.2)
+  learn_sarsa(0.2, 0.1)
+
+
 
