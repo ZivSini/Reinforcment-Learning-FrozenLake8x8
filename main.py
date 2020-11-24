@@ -91,7 +91,6 @@ def learn_sarsa(alpha, _lambda):
             current_state = next_state
             current_action = next_action
         epsilon = epsilon * 0.999
-        # graph.append(episode_reward)
 
     env.reset()
     env.render()
