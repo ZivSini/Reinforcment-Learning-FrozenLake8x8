@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 from numpy.random import random, choice
 
 
-
-
 def epsilon_greedy(Q, epsilon, state):
     values = Q[state, :]
     max_value = max(values)
